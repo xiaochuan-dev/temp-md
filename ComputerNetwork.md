@@ -105,15 +105,16 @@ B:                     |---CTS--->|                                 |---ACK--->|
 下图清晰地展示了不同帧间间隔的时长和它们之间的优先级关系：
 
 ```mermaid
-timeline
-    title 802.11帧间间隔 (IFS) 的时长与优先级
-    section 高优先级 : 最短等待，立即访问
-        SIFS : 最短 (10/16μs)<br>最高优先级帧
-    section 中优先级 : 标准数据访问
-        PIFS : SIFS + 1个时隙<br>PCF模式下使用
-        DIFS : SIFS + 2个时隙<br>DCF模式下标准数据帧
-    section 低优先级 : 扩展等待，最低优先级
-        EIFS : 最长 (DIFS + ACK传输时间)<br>错误恢复时使用
+graph TD
+    A[802.11帧间间隔 IFS] --> B[SIFS<br>10/16μs<br>最高优先级]
+    A --> C[PIFS<br>SIFS + 1 Slot<br>中高优先级]
+    A --> D[DIFS<br>SIFS + 2 Slots<br>标准优先级]
+    A --> E[EIFS<br>DIFS + ACK时间<br>最低优先级]
+    
+    B --> F[ACK帧<br>CTS帧<br>立即响应]
+    C --> G[PCF模式<br>AP轮询]
+    D --> H[DCF模式<br>数据/管理帧]
+    E --> I[错误恢复<br>惩罚等待]
 ```
 
 #### 1. SIFS （Short Interframe Space） - 最短帧间间隔
